@@ -81,7 +81,8 @@ finally
             }
             
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
-            slackNotifier(currentBuild.currentResult, lastCommitUser)
+            slackNotifier(currentBuild.currentResult )
+            committer(lastCommitUser)
         }
     }
 }
