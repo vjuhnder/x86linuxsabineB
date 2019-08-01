@@ -79,9 +79,16 @@ finally
                     ).trim()
                 echo lastCommitUser                
             }
-            
+            slackData([
+                string( currentResult: 'SUCCESS',
+                committer: ''
+                ),
+            ])
+            slackData.currentResult = currentBuild.currentResult
+            slackData.committer = lastCommitUser
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
-            slackNotifier(currentBuild.currentResult )
+            //slackNotifier(currentBuild.currentResult )
+            slackNotifier(slackData)
             committer(lastCommitUser)
         }
     }
