@@ -74,8 +74,11 @@ finally
                     println(env.PATH)
             dir('system-radar-software')
             {
-                def lastCommitUser = this.script.sh returnStdout: true, script: "hg parent | grep user "
-                echo lastCommitUser.trim()
+                def lastCommitUser = sh (
+                    returnStdout: true, 
+                    script: "hg parent | grep user "
+                    ).trim()
+                echo lastCommitUser
             }
         }
     }
