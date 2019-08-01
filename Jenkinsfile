@@ -73,6 +73,14 @@ finally
             echo env.JOB_DISPLAY_URL
             echo env.JOB_URL
             echo env.SRS_REVISION_ID
+            /*Get environment variables*/
+            def fields = env.getEnvironment()
+                   fields.each {
+                        key, value -> println("${key} = ${value}");
+                    }
+ 
+                    println(env.PATH)
+            
         }
     }
 }
