@@ -82,7 +82,8 @@ finally
             }
             
             slackData.add(0, currentBuild.currentResult)
-            slackData.add(1, lastCommitUser)
+            //remove user:label
+            slackData.add(1, (lastCommitUser.tokenize(":")[1]).trim())
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
             slackNotifier(slackData as String[])
         }
