@@ -38,14 +38,16 @@ try
     p << new Stage('RepoUpdateStep', this)
         .addStep(srs_repo)
     SRS_REVISION_ID = srs_repo.get_rev_id()
-    p << new Stage('Building Sabine', this)
-        .addStep(new BuildSrsStep(this, SRS_REVISION_ID, path,"x86_linux", "sabineB", "",""))
+ /*   p << new Stage('Building Sabine', this)
+        .addStep(new BuildSrsStep(this, SRS_REVISION_ID, path,"x86_linux", "sabineB", "",""))*/
     p << new Stage('Arhive bins', this)
         .addStep(new ArchiveSRSBinsStep(this, SRS_REVISION_ID, path,"x86_linux", "sabineB", ""))
 
     p.execute()
  
-
+    environment {
+        CHANGESET_ID = ${SRS_REVISION_ID}
+    }
     srs_repo = null
     sra_repo = null 
 }
@@ -65,6 +67,12 @@ finally
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
             slackNotifier(currentBuild.currentResult)
             echo currentBuild.currentResult
+            echo env.BUILD_TAG
+            echo env.BUILD_DISPLAY_NAME
+            echo env.BUILD_URL
+            echo env.JOB_DISPLAY_URL
+            echo env.JOB_URL
+            echo env.SRS_REVISION_ID
         }
     }
 }
