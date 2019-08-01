@@ -11,7 +11,8 @@ import com.uhnder.steps.*
 def SRS_REVISION_ID
 def SRA_REVISION_ID
 def RHAL_EXP_REVISION_ID
-
+def lastCommitUser
+    
 properties([
     parameters([
         string( defaultValue: 'default',
@@ -60,9 +61,7 @@ finally
         node('master')
         {
             currentBuild.displayName = "#${BUILD_NUMBER}: SRS(${SRS_REVISION_ID})"
-            
-            /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
-            slackNotifier(currentBuild.currentResult)
+                        
             echo currentBuild.currentResult
             echo env.SRS_REVISION_ID
             /*Get environment variables*/
@@ -74,12 +73,17 @@ finally
                     println(env.PATH)
             dir('system-radar-software')
             {
-                def lastCommitUser = sh (
+                lastCommitUser = sh (
                     returnStdout: true, 
                     script: "hg parent | grep user "
                     ).trim()
-                echo lastCommitUser
+                echo lastCommitUser                
             }
+            environment {
+                COMMITTER = lastCommitUser
+            }
+            /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
+            slackNotifier(currentBuild.currentResult)
         }
     }
 }
