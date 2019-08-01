@@ -12,7 +12,9 @@ def SRS_REVISION_ID
 def SRA_REVISION_ID
 def RHAL_EXP_REVISION_ID
 def lastCommitUser
-def slackData = []
+def slackData(result: '',
+              user: '',
+              composeFileNames: ['string1','string2'] as String[] )
     
 properties([
     parameters([
@@ -81,8 +83,8 @@ finally
                 echo lastCommitUser                
             }
             
-            slackData.add(0, currentBuild.currentResult)
-            slackData.add(1, lastCommitUser)
+            slackData.result = currentBuild.currentResult
+            slackData.user = lastCommitUser
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
             //slackNotifier(currentBuild.currentResult )
             slackNotifier(slackData)
