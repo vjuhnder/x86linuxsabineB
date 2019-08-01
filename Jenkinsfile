@@ -79,11 +79,9 @@ finally
                     ).trim()
                 echo lastCommitUser                
             }
-            environment {
-                COMMITTER = lastCommitUser
-            }
+            
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
-            slackNotifier(currentBuild.currentResult)
+            slackNotifier(currentBuild.currentResult, lastCommitUser)
         }
     }
 }
