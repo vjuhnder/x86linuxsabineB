@@ -45,9 +45,6 @@ try
 
     p.execute()
  
-    environment {
-        CHANGESET_ID = ${SRS_REVISION_ID}
-    }
     srs_repo = null
     sra_repo = null 
 }
@@ -67,11 +64,6 @@ finally
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
             slackNotifier(currentBuild.currentResult)
             echo currentBuild.currentResult
-            echo env.BUILD_TAG
-            echo env.BUILD_DISPLAY_NAME
-            echo env.BUILD_URL
-            echo env.JOB_DISPLAY_URL
-            echo env.JOB_URL
             echo env.SRS_REVISION_ID
             /*Get environment variables*/
             def fields = env.getEnvironment()
@@ -80,7 +72,11 @@ finally
                     }
  
                     println(env.PATH)
-            
+            dir('system-radar-software')
+            {
+                def lastCommitUser = this.script.sh returnStdout: true, script: "hg parent | grep user "
+                echo lastCommitUser.trim()
+            }
         }
     }
 }
