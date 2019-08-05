@@ -49,10 +49,13 @@ try
  
     srs_repo = null
     sra_repo = null 
+    currentBuild.currentResult = 'FAILURE'
 }
 catch (e)
 {
     echo 'The Pipeline failed :('
+    currentBuild.currentResult = 'FAILURE'
+    echo currentBuild.currentResult
     throw e
 }
 finally
@@ -81,7 +84,7 @@ finally
                 echo lastCommitUser                
             }
             
-            slackData.add(0, "FAILURE")
+            slackData.add(0, currentBuild.currentResult)
             //remove user:label
             slackData.add(1, (lastCommitUser.tokenize(":")[1]).trim())
             /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
